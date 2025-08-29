@@ -2,7 +2,7 @@ import io, os
 import requests
 import streamlit as st
 import pandas as pd
-from config import API_URL
+
 
 st.set_page_config(layout="wide")
 
@@ -20,10 +20,12 @@ def read_sample_file(filename):
 
 # --- Settings Sidebar ---
 st.sidebar.header("Settings")
-api_url = st.sidebar.text_input("API URL", value=API_URL)
+api_url = st.sidebar.text_input("API URL", value=os.getenv("API_URL", "http://127.0.0.1:8001"))
 model_name = st.sidebar.selectbox("Model", ["gpt-4o-mini", "gpt-4o"], index=0)
 temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.2, 0.1)
-demo_password = st.sidebar.text_input("Demo password", type="password")
+# 👇 prefill from Streamlit secret if present
+default_pwd = os.getenv("DEMO_PASSWORD", "")
+demo_password = st.sidebar.text_input("Demo password", value=default_pwd, type="password")
 
 headers = {}
 if demo_password:
