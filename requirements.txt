@@ -8,3 +8,5 @@ pytest
 requests
 pandas
 xlsxwriter
+sentence-transformers
+scikit-learn

@@ -24,7 +24,11 @@ def call_model(user_prompt: str, model_override: str = None, temp_override: floa
                 temperature=temp_override if temp_override is not None else TEMPERATURE,
             )
             raw = resp.choices[0].message.content.strip()
-            return json.loads(raw)
+            data = json.loads(raw)
+            # attach usage for logging
+            usage = getattr(resp, "usage", None)
+            data["_usage"] = usage.__dict__ if usage else None
+            return data
         except Exception as e:
             last = e
             if i < attempts - 1:
