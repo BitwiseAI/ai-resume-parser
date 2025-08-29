@@ -1,0 +1,2 @@
+Hiring an AI engineer to build a resume parser that extracts skills and scores candidate-job fit.
+Stack: Python, FastAPI, OpenAI. Bonus: vector search experience.

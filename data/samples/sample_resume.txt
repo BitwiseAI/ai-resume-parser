@@ -1,0 +1,2 @@
+Abhishek Pitla — Full-stack engineer (Node.js/TypeScript, MySQL/Redis/Kafka, AWS, AI/RAG).
+Shipped RAG support bot; built MySQL↔Redis sync; Kafka fallback during outages.
