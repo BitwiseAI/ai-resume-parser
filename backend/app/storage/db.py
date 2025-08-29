@@ -1,4 +1,4 @@
-import sqlite3, threading
+import sqlite3, threading, hashlib
 from ..core.config import DB_PATH
 
 _lock = threading.Lock()
@@ -33,3 +33,15 @@ def list_runs(limit=50):
         )
         cols = [c[0] for c in cur.description]
         return [dict(zip(cols, r)) for r in cur.fetchall()]
+
+def get_cached(resume: str, job: str):
+    """Return the most recent match from the DB if it exists"""
+    with sqlite3.connect(DB_PATH) as con:
+        cur = con.execute("SELECT score, skills, reasons, model FROM runs WHERE resume = ? AND job = ? ORDER BY id DESC LIMIT 1", (resume, job))
+        row = cur.fetchone()
+        if not row:
+            return None
+        score, skills, reasons, model = row
+        # Guard against empty skills string
+        skill_list = skills.split(",") if skills else []
+        return {"skills": skill_list, "score": int(score), "reasons": reasons, "model": model}
