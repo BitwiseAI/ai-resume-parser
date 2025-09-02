@@ -10,6 +10,10 @@ app = FastAPI(title="Resume ↔ JD Parser API")
 app.middleware("http")(access_log_middleware)
 app.include_router(api_router)
 
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the Resume Parser API"}
+
 @app.on_event("startup")
 def on_startup():
     init_db()
