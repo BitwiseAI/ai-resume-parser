@@ -1,9 +1,16 @@
-import sqlite3, threading, hashlib
+import sqlite3, threading, hashlib, os
 from ..core.config import DB_PATH
 
 _lock = threading.Lock()
 
+def _ensure_db_dir():
+    db_dir = os.path.dirname(DB_PATH)
+    if db_dir and not os.path.exists(db_dir):
+        os.makedirs(db_dir, exist_ok=True)
+
+
 def init_db():
+    _ensure_db_dir()
     with sqlite3.connect(DB_PATH) as con:
         con.execute("""
             CREATE TABLE IF NOT EXISTS runs(
@@ -19,6 +26,7 @@ def init_db():
         """)
 
 def save_run(resume, job, skills, score, reasons, model):
+    _ensure_db_dir()
     with _lock, sqlite3.connect(DB_PATH) as con:
         con.execute(
             "INSERT INTO runs(resume,job,skills,score,reasons,model) VALUES(?,?,?,?,?,?)",

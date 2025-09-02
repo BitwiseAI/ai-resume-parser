@@ -24,7 +24,7 @@ def parse(req: ParseRequest, authorization: Optional[str] = Header(default=None)
     if cache:
         return ParseResult(**cache)
 
-        data = parse_resume_job(req.resume_text, req.job_text, model=req.model, temperature=req.temperature)
+    data = parse_resume_job(req.resume_text, req.job_text, model=req.model, temperature=req.temperature)
     usage = data.pop("_usage", None)
     if usage:
         log.info(f"tokens: {usage}")
@@ -39,7 +39,7 @@ def runs(limit: int = 50, authorization: Optional[str] = Header(default=None)):
 
 
 def _do_parse_and_save(resume_text: str, job_text: str, model: str, temperature: float):
-        data = parse_resume_job(resume_text, job_text, model=model, temperature=temperature)
+    data = parse_resume_job(resume_text, job_text, model=model, temperature=temperature)
     usage = data.pop("_usage", None)
     if usage:
         log.info(f"tokens: {usage}")
@@ -64,7 +64,7 @@ def batch_parse(req: BatchParseRequest, authorization: Optional[str] = Header(de
         if cache:
             obj = ParseResult(**cache)
         else:
-                        data = parse_resume_job(resume_text, req.job_text)
+            data = parse_resume_job(resume_text, req.job_text)
             usage = data.pop("_usage", None)
             if usage:
                 log.info(f"tokens: {usage}")
